@@ -1,0 +1,52 @@
+$header-padding: 48px;
+$item-spacing: 24px;
+$emblem-width: 70px;
+$header-height: 90px;
+$icon-size: 36px;
+
+.header {
+  background-color: #13315c;
+  margin-bottom: 50px;
+  height: $header-height;
+}
+
+.nav {
+  padding: 0 $header-padding;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-title {
+  margin: 0;
+  margin-left: $item-spacing + $emblem-width;
+}
+
+.emblem {
+  top: $header-height / 8;
+  left: $header-padding;
+  position: absolute;
+  width: $emblem-width;
+}
+
+.nav-right {
+  span {
+    color: white;
+  }
+  svg {
+    fill: white;
+    width: $icon-size;
+    height: $icon-size;
+    margin-right: 8px;
+  }
+  display: flex;
+}
+
+.nav-button {
+  @include button-reset;
+  display: flex;
+  align-items: center;
+  margin-left: $item-spacing;
+}
