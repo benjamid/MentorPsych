@@ -13,7 +13,7 @@ const MentorPsychApp = () => {
     <main className="app-container">
       <div className="mentor-container">
         <iframe
-          src="http://mentorpal.org/mentorpanel/?mentor=clint"
+          src="https://mentorpal.org/mentorpanel/?mentor=clint"
           title="MentorPal Test"
           className="mentorpal-frame"
         ></iframe>
