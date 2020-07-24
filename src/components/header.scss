@@ -13,7 +13,7 @@ $icon-size: 36px;
 .nav {
   padding: 0 var(--header-padding);
   height: 100%;
-  width: calc(calc(100% - var(--header-padding)) / 2);
+  width: calc(100% - calc(var(--header-padding) * 2));
   display: flex;
   justify-content: space-between;
   align-items: center;
