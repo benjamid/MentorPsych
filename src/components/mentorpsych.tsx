@@ -1,12 +1,6 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
 import React from "react"
 import "./mentorpsych.scss"
+import EventsComponent from "./events"
 
 const MentorPsychApp = () => {
   return (
@@ -23,8 +17,7 @@ const MentorPsychApp = () => {
         <span>Resources will go here</span>
       </div>
       <div className="events-container">
-        <h2>Events</h2>
-        <span>Events will go here</span>
+        <EventsComponent />
       </div>
     </main>
   )
