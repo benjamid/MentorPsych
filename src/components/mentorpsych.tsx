@@ -1,16 +1,13 @@
 import React from "react"
 import "./mentorpsych.scss"
 import EventsComponent from "./events"
+import MentorPal from "./mentorpal"
 
 const MentorPsychApp = () => {
   return (
     <main className="app-container">
       <div className="mentor-container">
-        <iframe
-          src="https://mentorpal.org/mentorpanel/?mentor=clint"
-          title="MentorPal Test"
-          className="mentorpal-frame"
-        ></iframe>
+        <MentorPal />
       </div>
       <div className="resources-container">
         <h2>Resources</h2>
