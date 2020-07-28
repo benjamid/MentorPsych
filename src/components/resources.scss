@@ -1,0 +1,16 @@
+.resources-accordion {
+  width: 100%;
+  height: calc(100% - 40px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.resources-title {
+  white-space: initial;
+  padding-left: 10px;
+  margin: 0px;
+  font-size: 21px;
+  font-weight: 300;
+  line-height: 40px;
+  color: #292f33;
+}

@@ -1,7 +1,8 @@
 import React from "react"
-import "./mentorpsych.scss"
 import EventsComponent from "./events"
 import MentorPal from "./mentorpal"
+import ResourcesComponent from "./resources"
+import "./mentorpsych.scss"
 
 const MentorPsychApp = () => {
   return (
@@ -10,8 +11,7 @@ const MentorPsychApp = () => {
         <MentorPal />
       </div>
       <div className="resources-container">
-        <h2>Resources</h2>
-        <span>Resources will go here</span>
+        <ResourcesComponent />
       </div>
       <div className="events-container">
         <EventsComponent />

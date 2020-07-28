@@ -19,8 +19,6 @@ $twitterFeedHeight: 380px;
 
 .resources-container {
   grid-area: resources;
-  background-color: #ccc;
-  border-radius: 6px;
   margin-left: 24px;
   height: ($appHeight - $twitterFeedHeight - 24px);
 }
