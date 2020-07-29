@@ -1,11 +1,12 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
-import React from "react"
+import React, { useState } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
 import InfoIcon from "../icons/info"
 import PrivacyTipIcon from "../icons/privacy_tip"
 import "./header.scss"
+import PrivacyDialog from "./privacy_dialog"
 
 const Header = ({ siteTitle }) => {
   const emblem = useStaticQuery(graphql`
@@ -20,8 +21,16 @@ const Header = ({ siteTitle }) => {
     }
   `)
 
-  const privacyClick = () => {
-    alert("privacy button was clicked")
+  const [openPrivacy, setOpenPrivacy] = useState(false)
+  const [selectedPrivacyValue, setSelectedPrivacyValue] = useState(null)
+
+  const handleClickOpenPrivacy = () => {
+    setOpenPrivacy(true)
+  }
+
+  const handleClosePrivacy = (value: string) => {
+    setOpenPrivacy(false)
+    setSelectedPrivacyValue(value)
   }
 
   const infoClick = () => {
@@ -29,38 +38,45 @@ const Header = ({ siteTitle }) => {
   }
 
   return (
-    <header className="header">
-      <div className="nav">
-        <div className="emblem">
-          <Img
-            fluid={emblem.placeholderImage.childImageSharp.fluid}
-            draggable={false}
-            alt="CSUF Emblem"
-          />
+    <>
+      <header className="header">
+        <div className="nav">
+          <div className="emblem">
+            <Img
+              fluid={emblem.placeholderImage.childImageSharp.fluid}
+              draggable={false}
+              alt="CSUF Emblem"
+            />
+          </div>
+          <h1 className="site-title">
+            <Link
+              to="/"
+              style={{
+                color: `white`,
+                textDecoration: `none`,
+              }}
+            >
+              {siteTitle}
+            </Link>
+          </h1>
+          <div className="nav-right">
+            <button className="nav-button" onClick={handleClickOpenPrivacy}>
+              <PrivacyTipIcon />
+              <span>Privacy {selectedPrivacyValue}</span>
+            </button>
+            <button className="nav-button" onClick={infoClick}>
+              <InfoIcon />
+              <span>Info</span>
+            </button>
+          </div>
         </div>
-        <h1 className="site-title">
-          <Link
-            to="/"
-            style={{
-              color: `white`,
-              textDecoration: `none`,
-            }}
-          >
-            {siteTitle}
-          </Link>
-        </h1>
-        <div className="nav-right">
-          <button className="nav-button" onClick={privacyClick}>
-            <PrivacyTipIcon />
-            <span>Privacy</span>
-          </button>
-          <button className="nav-button" onClick={infoClick}>
-            <InfoIcon />
-            <span>Info</span>
-          </button>
-        </div>
-      </div>
-    </header>
+      </header>
+      <PrivacyDialog
+        selectedValue={selectedPrivacyValue}
+        open={openPrivacy}
+        onClose={handleClosePrivacy}
+      />
+    </>
   )
 }
 
