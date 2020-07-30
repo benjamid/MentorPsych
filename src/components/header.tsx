@@ -7,6 +7,7 @@ import InfoIcon from "../icons/info"
 import PrivacyTipIcon from "../icons/privacy_tip"
 import "./header.scss"
 import PrivacyDialog from "./privacy_dialog"
+import InfoDialog from "./info_dialog"
 
 const Header = ({ siteTitle }) => {
   const emblem = useStaticQuery(graphql`
@@ -24,6 +25,9 @@ const Header = ({ siteTitle }) => {
   const [openPrivacy, setOpenPrivacy] = useState(false)
   const [selectedPrivacyValue, setSelectedPrivacyValue] = useState(null)
 
+  const [openInfo, setOpenInfo] = useState(false)
+  const [selectedInfoValue, setSelectedInfoValue] = useState(0)
+
   const handleClickOpenPrivacy = () => {
     setOpenPrivacy(true)
   }
@@ -33,8 +37,13 @@ const Header = ({ siteTitle }) => {
     setSelectedPrivacyValue(value)
   }
 
-  const infoClick = () => {
-    alert("info button was clicked")
+  const handleClickOpenInfo = () => {
+    setOpenInfo(true)
+  }
+
+  const handleCloseInfo = (value: number) => {
+    setOpenInfo(false)
+    setSelectedInfoValue(value)
   }
 
   return (
@@ -64,7 +73,7 @@ const Header = ({ siteTitle }) => {
               <PrivacyTipIcon />
               <span>Privacy {selectedPrivacyValue}</span>
             </button>
-            <button className="nav-button" onClick={infoClick}>
+            <button className="nav-button" onClick={handleClickOpenInfo}>
               <InfoIcon />
               <span>Info</span>
             </button>
@@ -75,6 +84,11 @@ const Header = ({ siteTitle }) => {
         selectedValue={selectedPrivacyValue}
         open={openPrivacy}
         onClose={handleClosePrivacy}
+      />
+      <InfoDialog
+        selectedValue={selectedInfoValue}
+        open={openInfo}
+        onClose={handleCloseInfo}
       />
     </>
   )
