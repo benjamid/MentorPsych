@@ -1,7 +1,7 @@
 import React from "react"
 import EventsComponent from "./events"
 import MentorPal from "./mentorpal"
-import ResourcesComponent from "./resources"
+import ResourcesComponent from "./resources-2"
 import "./mentorpsych.scss"
 
 const MentorPsychApp = () => {
