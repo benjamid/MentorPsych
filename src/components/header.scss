@@ -8,6 +8,12 @@ $icon-size: 36px;
   margin-bottom: 50px;
   height: $header-height;
   --header-padding: 48px;
+  z-index: 900;
+  @include media("<=tablet") {
+    height: $header-height / 1.6;
+    position: fixed;
+    width: 100%;
+  }
 }
 
 .nav {
@@ -17,11 +23,19 @@ $icon-size: 36px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @include media("<=tablet") {
+    width: calc(100% - var(--header-padding));
+    padding: 0 calc(var(--header-padding) / 2);
+  }
 }
 
 .site-title {
   margin: 0;
   margin-left: $item-spacing + $emblem-width;
+  @include media("<=tablet") {
+    font-size: 24px;
+    margin-left: ($item-spacing + $emblem-width) / 2;
+  }
 }
 
 .emblem {
@@ -29,6 +43,10 @@ $icon-size: 36px;
   left: var(--header-padding);
   position: absolute;
   width: $emblem-width;
+  @include media("<=tablet") {
+    width: $emblem-width / 2;
+    left: calc(var(--header-padding) / 2);
+  }
 }
 
 .nav-right {
@@ -40,6 +58,9 @@ $icon-size: 36px;
     width: $icon-size;
     height: $icon-size;
     margin-right: 8px;
+    @include media("<=tablet") {
+      margin-right: 0;
+    }
   }
   display: flex;
 }
@@ -49,4 +70,7 @@ $icon-size: 36px;
   display: flex;
   align-items: center;
   margin-left: $item-spacing;
+  @include media("<=tablet") {
+    margin-left: $item-spacing / 2;
+  }
 }

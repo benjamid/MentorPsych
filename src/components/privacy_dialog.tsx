@@ -1,11 +1,12 @@
 import React from "react"
 import PropTypes from "prop-types"
-import Button from "@material-ui/core/Button"
+import { useStaticQuery, graphql } from "gatsby"
 import Dialog from "@material-ui/core/Dialog"
-import DialogActions from "@material-ui/core/DialogActions"
 import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
+// import Button from "@material-ui/core/Button"
+// import DialogActions from "@material-ui/core/DialogActions"
 
 export interface SimpleDialogProps {
   open: boolean
@@ -14,6 +15,25 @@ export interface SimpleDialogProps {
 }
 
 const PrivacyDialog = (props: SimpleDialogProps) => {
+  const data = useStaticQuery(graphql`
+    query PrivacyDialogQuery {
+      allMarkdownRemark(
+        filter: { fileAbsolutePath: { regex: "/privacy_dialog/" } }
+      ) {
+        edges {
+          node {
+            frontmatter {
+              title
+            }
+            html
+          }
+        }
+      }
+    }
+  `)
+
+  const { frontmatter, html } = data.allMarkdownRemark.edges[0].node
+
   const { onClose, selectedValue, open } = props
 
   const handleClose = () => {
@@ -31,16 +51,14 @@ const PrivacyDialog = (props: SimpleDialogProps) => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
-        {"MentorPsych Privacy Policies"}
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">{frontmatter.title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          Let MentorPsych help track usage. This means sending anonymous usage
-          data to MentorPsych.
-        </DialogContentText>
+        <DialogContentText
+          id="alert-dialog-description"
+          dangerouslySetInnerHTML={{ __html: html }}
+        ></DialogContentText>
       </DialogContent>
-      <DialogActions>
+      {/* <DialogActions>
         <Button onClick={() => handleItemClick("Disagree")} color="primary">
           Disagree
         </Button>
@@ -51,7 +69,7 @@ const PrivacyDialog = (props: SimpleDialogProps) => {
         >
           Agree
         </Button>
-      </DialogActions>
+      </DialogActions> */}
     </Dialog>
   )
 }

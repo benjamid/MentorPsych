@@ -1,96 +1,53 @@
 import React from "react"
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles"
-import Accordion from "@material-ui/core/Accordion"
-import AccordionSummary from "@material-ui/core/AccordionSummary"
-import AccordionDetails from "@material-ui/core/AccordionDetails"
-import Typography from "@material-ui/core/Typography"
-import ExpandMoreIcon from "../icons/expand_more"
+import PropTypes from "prop-types"
+import List from "@material-ui/core/List"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemText from "@material-ui/core/ListItemText"
+import MaterialIcon from "../icons/material_icons"
+import { OutboundLink } from "gatsby-plugin-google-gtag"
 import "./resources.scss"
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: "100%",
-    },
-    heading: {
-      fontSize: theme.typography.pxToRem(15),
-      fontWeight: theme.typography.fontWeightRegular,
-    },
-  })
-)
-
-const ResourcesComponent = () => {
-  const classes = useStyles()
-
+const ListItemOutboundLink = props => {
+  const { icon, href, text } = props
   return (
     <>
-      <h1 className="resources-title">Resources</h1>
-      <div className="resources-accordion">
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography className={classes.heading}>Accordion 1</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-              <a href="#"> Example Link</a>
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
-          >
-            <Typography className={classes.heading}>Accordion 2</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-              <a href="#"> Example Link</a>
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion disabled>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel3a-content"
-            id="panel3a-header"
-          >
-            <Typography className={classes.heading}>
-              Disabled Accordion
-            </Typography>
-          </AccordionSummary>
-        </Accordion>
-        <Accordion>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel4a-content"
-            id="panel4a-header"
-          >
-            <Typography className={classes.heading}>Accordion 4</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-              <a href="#"> Example Link</a>
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-      </div>
+      <ListItem button component={OutboundLink} href={href}>
+        {icon && (
+          <ListItemIcon>
+            <MaterialIcon icon={icon} />
+          </ListItemIcon>
+        )}
+        <ListItemText primary={text} />
+      </ListItem>
     </>
   )
+}
+
+const ResourcesComponent = ({ data }) => (
+  <>
+    <h1 className="resources-title">Resources</h1>
+    <div className="resources-content">
+      <List component="nav" aria-label="resources">
+        {data &&
+          data.map(({ node }, i) => {
+            const { title, url, icon } = node.frontmatter
+            return (
+              <ListItemOutboundLink
+                key={i}
+                href={url}
+                text={title}
+                icon={icon}
+              />
+            )
+          })}
+      </List>
+    </div>
+  </>
+)
+
+ResourcesComponent.propTypes = {
+  data: PropTypes.array.isRequired,
 }
 
 export default ResourcesComponent

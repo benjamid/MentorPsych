@@ -1,13 +1,13 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
 import InfoIcon from "../icons/info"
 import PrivacyTipIcon from "../icons/privacy_tip"
-import "./header.scss"
 import PrivacyDialog from "./privacy_dialog"
 import InfoDialog from "./info_dialog"
+import "./header.scss"
 
 const Header = ({ siteTitle }) => {
   const emblem = useStaticQuery(graphql`
@@ -21,6 +21,17 @@ const Header = ({ siteTitle }) => {
       }
     }
   `)
+
+  const [windowWidth, setWindowWidth] = useState(null)
+
+  const updateWindowSize = () => {
+    setWindowWidth(window.innerWidth)
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", updateWindowSize)
+    updateWindowSize()
+  }, [])
 
   const [openPrivacy, setOpenPrivacy] = useState(false)
   const [selectedPrivacyValue, setSelectedPrivacyValue] = useState(null)
@@ -71,11 +82,11 @@ const Header = ({ siteTitle }) => {
           <div className="nav-right">
             <button className="nav-button" onClick={handleClickOpenPrivacy}>
               <PrivacyTipIcon />
-              <span>Privacy {selectedPrivacyValue}</span>
+              {windowWidth >= 768 && <span>Privacy</span>}
             </button>
             <button className="nav-button" onClick={handleClickOpenInfo}>
               <InfoIcon />
-              <span>Info</span>
+              {windowWidth >= 768 && <span>Info</span>}
             </button>
           </div>
         </div>
