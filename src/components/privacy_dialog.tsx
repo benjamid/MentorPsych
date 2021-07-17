@@ -5,6 +5,7 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
+import styled from 'styled-components';
 // import Button from "@material-ui/core/Button"
 // import DialogActions from "@material-ui/core/DialogActions"
 
@@ -32,6 +33,15 @@ const PrivacyDialog = (props: SimpleDialogProps) => {
     }
   `)
 
+  const Button = styled.button`
+  background-color: #00008b;
+  color: white;
+  font-size: 15px;
+  height: 200px;
+  width: 70px;
+`;
+
+
   const { frontmatter, html } = data.allMarkdownRemark.edges[0].node
 
   const { onClose, selectedValue, open } = props
@@ -45,12 +55,17 @@ const PrivacyDialog = (props: SimpleDialogProps) => {
   }
 
   return (
+
     <Dialog
       open={open}
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
+    <Button onClick={handleClose}>
+        Close
+    </Button>
+
       <DialogTitle id="alert-dialog-title">{frontmatter.title}</DialogTitle>
       <DialogContent>
         <DialogContentText
