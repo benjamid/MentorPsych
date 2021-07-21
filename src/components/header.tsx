@@ -6,6 +6,7 @@ import Img from "gatsby-image"
 import InfoIcon from "../icons/info"
 import PrivacyTipIcon from "../icons/privacy_tip"
 import PrivacyDialog from "./privacy_dialog"
+import TimerDialog from "./timer_dialog"
 import InfoDialog from "./info_dialog"
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import "./header.scss"
@@ -24,10 +25,31 @@ const Header = ({ siteTitle }) => {
   `)
 
   const [windowWidth, setWindowWidth] = useState(null)
+  const [seconds, setSeconds] = React.useState(10);
 
   const updateWindowSize = () => {
     setWindowWidth(window.innerWidth)
   }
+
+  
+
+  const open = (url) => {
+  const win = window.open(url, '_blank');
+  if (win != null) {
+    win.focus();
+  }
+}
+
+  useEffect(() => {
+    if (seconds > 5) {
+      setTimeout(() => setSeconds(seconds - 1), 1000);
+    } else {
+      if(seconds!=0) {
+        setSeconds(0);
+        setOpenTimer(true);
+      }   
+    }
+  });
 
   useEffect(() => {
     window.addEventListener("resize", updateWindowSize)
@@ -35,6 +57,7 @@ const Header = ({ siteTitle }) => {
   }, [])
 
   const [openPrivacy, setOpenPrivacy] = useState(false)
+  const [openTimer, setOpenTimer] = useState(false)
   const [selectedPrivacyValue, setSelectedPrivacyValue] = useState(null)
 
   const [openInfo, setOpenInfo] = useState(false)
@@ -50,6 +73,11 @@ const Header = ({ siteTitle }) => {
   const handleClosePrivacy = (value: string) => {
     setOpenPrivacy(false)
     setSelectedPrivacyValue(value)
+  }
+
+  const handleCloseTimer = () => {
+    setOpenTimer(false);
+    open("https://www.google.com/");
   }
 
   const handleClickOpenInfo = () => {
@@ -114,6 +142,10 @@ const Header = ({ siteTitle }) => {
         open={openPrivacy}
         onClose={handleClosePrivacy}
       /> 
+      <TimerDialog
+      open={openTimer}
+      onClose={handleCloseTimer}
+      ></TimerDialog>
       <InfoDialog
         selectedValue={selectedInfoValue}
         open={openInfo}
