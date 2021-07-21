@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Suspense } from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 import Dialog from "@material-ui/core/Dialog"
@@ -9,11 +9,14 @@ import styled from 'styled-components';
 // import Button from "@material-ui/core/Button"
 // import DialogActions from "@material-ui/core/DialogActions"
 
+
+
 export interface SimpleDialogProps {
   open: boolean
   selectedValue: string
   onClose: (value: string) => void
 }
+
 
 const PrivacyDialog = (props: SimpleDialogProps) => {
   const data = useStaticQuery(graphql`
@@ -37,8 +40,19 @@ const PrivacyDialog = (props: SimpleDialogProps) => {
   background-color: #00008b;
   color: white;
   font-size: 15px;
-  height: 200px;
-  width: 70px;
+  padding: 1%;
+  margin: 1%;
+  cursor: pointer;
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const ChoiceContainer = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 
@@ -47,31 +61,62 @@ const PrivacyDialog = (props: SimpleDialogProps) => {
   const { onClose, selectedValue, open } = props
 
   const handleClose = () => {
-    onClose(selectedValue)
+    onClose(selectedValue);
+  }
+
+  const handleChoice = choice => {
+    let content = '';
+    if(choice) {
+      content = 'Thanks for agreeing. You can close this now.';
+    } else {
+      content = 'You cannot participate in the study if you disagree. You can close this now.';
+    }
+    setConfirmContent(content);
+     setCurrentView('confirm');
+  };
+
+  const handlePrint = () => {
+    window.print();
   }
 
   const handleItemClick = (value: string) => {
     onClose(value)
   }
 
-  return (
+  const [currentView, setCurrentView] = React.useState('choice');
+  const [confirmContent, setConfirmContent] = React.useState('');
 
+  return (
     <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
+            open={open}
+            onClose={(event, reason) => {
+           if (reason !== 'backdropClick') {
+             handleClose();
+          }
+          }}
+     aria-labelledby="alert-dialog-title"
+     aria-describedby="alert-dialog-description"
     >
-    <Button onClick={handleClose}>
-        Close
-    </Button>
+    
+    <Container>
+    {currentView=='choice'?<Button onClick={handlePrint}>
+        Print
+    </Button>:''}
+    
+   {currentView!='choice'?<Button onClick={handleClose}>
+      Close
+    </Button>:''}
+    </Container>
 
       <DialogTitle id="alert-dialog-title">{frontmatter.title}</DialogTitle>
       <DialogContent>
-        <DialogContentText
+      {currentView=='choice'
+      ?<DialogContentText
           id="alert-dialog-description"
           dangerouslySetInnerHTML={{ __html: html }}
-        ></DialogContentText>
+        ></DialogContentText>:
+      confirmContent}
+        
       </DialogContent>
       {/* <DialogActions>
         <Button onClick={() => handleItemClick("Disagree")} color="primary">
@@ -85,6 +130,14 @@ const PrivacyDialog = (props: SimpleDialogProps) => {
           Agree
         </Button>
       </DialogActions> */}
+      {currentView=='choice'?<ChoiceContainer>
+    <Button onClick={()=>handleChoice(true)}>
+        Agree
+    </Button>
+    <Button onClick={()=>handleChoice(false)}>
+        Disagree
+    </Button>
+    </ChoiceContainer>:''}
     </Dialog>
   )
 }

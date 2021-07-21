@@ -7,6 +7,7 @@ import InfoIcon from "../icons/info"
 import PrivacyTipIcon from "../icons/privacy_tip"
 import PrivacyDialog from "./privacy_dialog"
 import InfoDialog from "./info_dialog"
+import BorderColorIcon from '@material-ui/icons/BorderColor';
 import "./header.scss"
 
 const Header = ({ siteTitle }) => {
@@ -39,6 +40,9 @@ const Header = ({ siteTitle }) => {
   const [openInfo, setOpenInfo] = useState(false)
   const [selectedInfoValue, setSelectedInfoValue] = useState(0)
 
+  const [openPostSurvey, setOpenPostSurvey] = useState(false)
+  const [selectedSurveyValue, setSurveyValue] = useState(0) 
+
   const handleClickOpenPrivacy = () => {
     setOpenPrivacy(true)
   }
@@ -57,6 +61,14 @@ const Header = ({ siteTitle }) => {
     setSelectedInfoValue(value)
   }
 
+   const handleOpenPostSurvey = () => {
+    setOpenPostSurvey(true)
+  }
+  const handleClosePostSurvey = () => {
+      setOpenPostSurvey(false)
+      setSurveyValue(value)
+  }
+ 
   return (
     <>
       <header className="header">
@@ -80,6 +92,12 @@ const Header = ({ siteTitle }) => {
             </Link>
           </h1>
           <div className="nav-right">
+           <a rel="noopener noreferrer" href="https://www.google.com/" target="_blank">
+             <button className="nav-button" onClick={handleOpenPostSurvey}>
+               <BorderColorIcon />
+              {windowWidth >= 768 && <span>Post-Survey</span>}
+            </button>
+            </a>
             <button className="nav-button" onClick={handleClickOpenPrivacy}>
               <PrivacyTipIcon />
               {windowWidth >= 768 && <span>Privacy</span>}
@@ -91,11 +109,11 @@ const Header = ({ siteTitle }) => {
           </div>
         </div>
       </header>
-      <PrivacyDialog
+       <PrivacyDialog
         selectedValue={selectedPrivacyValue}
         open={openPrivacy}
         onClose={handleClosePrivacy}
-      />
+      /> 
       <InfoDialog
         selectedValue={selectedInfoValue}
         open={openInfo}
