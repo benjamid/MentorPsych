@@ -9,9 +9,11 @@ import PrivacyDialog from "./privacy_dialog"
 import TimerDialog from "./timer_dialog"
 import InfoDialog from "./info_dialog"
 import BorderColorIcon from '@material-ui/icons/BorderColor';
-import "./header.scss"
+import "./header.scss";
+import queryString from "query-string"
 
 const Header = ({ siteTitle }) => {
+  //const { postsurveytime } = search;
   const emblem = useStaticQuery(graphql`
     query {
       placeholderImage: file(relativePath: { eq: "csuf-emblem-rgb.png" }) {
@@ -24,8 +26,13 @@ const Header = ({ siteTitle }) => {
     }
   `)
 
+  const queries = queryString.parseUrl(window.location.href);
+  const { postsurveytime,uuid } = queries.query;
+  console.log(queries);
+
   const [windowWidth, setWindowWidth] = useState(null)
   const [seconds, setSeconds] = React.useState(10);
+  const [postSurveyLink,setPostSurveyLink] = React.useState(`https://usc.qualtrics.com/jfe/form/SV_cGZGsY9AowOqi22?uuid=${uuid}&postsurveytime=${postsurveytime}`);
 
   const updateWindowSize = () => {
     setWindowWidth(window.innerWidth)
@@ -34,7 +41,7 @@ const Header = ({ siteTitle }) => {
   
 
   const open = (url) => {
-  const win = window.open(url, '_blank');
+  const win = window.open(url);
   if (win != null) {
     win.focus();
   }
@@ -77,7 +84,7 @@ const Header = ({ siteTitle }) => {
 
   const handleCloseTimer = () => {
     setOpenTimer(false);
-    open("https://www.google.com/");
+    open(postSurveyLink);
   }
 
   const handleClickOpenInfo = () => {
@@ -120,7 +127,7 @@ const Header = ({ siteTitle }) => {
             </Link>
           </h1>
           <div className="nav-right">
-           <a rel="noopener noreferrer" href="https://www.google.com/" target="_blank">
+           <a rel="noopener noreferrer" href={postSurveyLink}>
              <button className="nav-button" onClick={handleOpenPostSurvey}>
                <BorderColorIcon />
               {windowWidth >= 768 && <span>Post-Survey</span>}
@@ -143,6 +150,7 @@ const Header = ({ siteTitle }) => {
         onClose={handleClosePrivacy}
       /> 
       <TimerDialog
+      time={postsurveytime}
       open={openTimer}
       onClose={handleCloseTimer}
       ></TimerDialog>
@@ -163,4 +171,4 @@ Header.defaultProps = {
   siteTitle: ``,
 }
 
-export default Header
+export default Header;
