@@ -10,9 +10,9 @@ import TimerDialog from "./timer_dialog"
 import InfoDialog from "./info_dialog"
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import "./header.scss";
-import queryString from "query-string"
 
-const Header = ({ siteTitle }) => {
+import withLocation from "./withLocation"
+const Header = ({ siteTitle, search }) => {
   //const { postsurveytime } = search;
   const emblem = useStaticQuery(graphql`
     query {
@@ -26,9 +26,7 @@ const Header = ({ siteTitle }) => {
     }
   `)
 
-  const queries = queryString.parseUrl(window.location.href);
-  const { postsurveytime,uuid } = queries.query;
-  console.log(queries);
+  const { postsurveytime,uuid } = search;
 
   const [windowWidth, setWindowWidth] = useState(null)
   const [seconds, setSeconds] = React.useState(10);
@@ -171,4 +169,4 @@ Header.defaultProps = {
   siteTitle: ``,
 }
 
-export default Header;
+export default withLocation(Header);
