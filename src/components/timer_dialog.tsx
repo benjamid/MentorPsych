@@ -1,19 +1,32 @@
-import React, { Suspense } from "react"
+import React, { Suspense, useState } from "react"
 import Dialog from "@material-ui/core/Dialog"
 import DialogContent from "@material-ui/core/DialogContent"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+import withLocation from "./withLocation"
+import { Location } from "@reach/router"
+import queryString from "query-string"
 
 export interface SimpleDialogProps {
   open: boolean
+  time: Number
   onClose: () => void
 }
 
+const TimerDialog = (props) => {
+  console.log(props);
+  const { onClose, search, time, open } = props;
+const [state, setState] = useState(false)
+  setTimeout(function() {
+    setState(true);
+  }, 10000)
+console.log(search);
+console.log("time:",time,typeof time)
 
-const TimerDialog = (props: SimpleDialogProps) => {
-  const { onClose, open } = props;
   return (
-    <Dialog
+    <div>
+      
+       <Dialog
     open={open}
     onClose={(event, reason) => {
            if (reason !== 'backdropClick') {
@@ -29,9 +42,10 @@ const TimerDialog = (props: SimpleDialogProps) => {
       <CountdownCircleTimer
     isPlaying
     onComplete={() => {
+      console.log("close");
       onClose();
     }}
-    duration={5}
+    duration={parseInt(time)}
     ariaLabel="Redirecting in..."
     colors={[
       ['#004777', 0.33],
@@ -42,7 +56,9 @@ const TimerDialog = (props: SimpleDialogProps) => {
     {({ remainingTime }) => remainingTime}
   </CountdownCircleTimer>
       </DialogContent>
-    </Dialog>
+  </Dialog>
+    </div>
   );
 }
-export default TimerDialog
+export default TimerDialog;
+
