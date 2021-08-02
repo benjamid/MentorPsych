@@ -27,10 +27,10 @@ const Header = ({ siteTitle, search }) => {
   `)
 
   const { postsurveytime,uuid } = search;
-
+    console.log("search:",search);
   const [windowWidth, setWindowWidth] = useState(null)
-  const [seconds, setSeconds] = React.useState(10);
-  const [postSurveyLink,setPostSurveyLink] = React.useState(`https://usc.qualtrics.com/jfe/form/SV_cGZGsY9AowOqi22?uuid=${uuid}&postsurveytime=${postsurveytime}`);
+  const [seconds, setSeconds] = React.useState(1200);
+  const [postSurveyLink,setPostSurveyLink] = React.useState('');
 
   const updateWindowSize = () => {
     setWindowWidth(window.innerWidth)
@@ -57,6 +57,7 @@ const Header = ({ siteTitle, search }) => {
   });
 
   useEffect(() => {
+    setPostSurveyLink(`https://usc.qualtrics.com/jfe/form/SV_cGZGsY9AowOqi22?uuid=${uuid}&postsurveytime=${postsurveytime}`);
     window.addEventListener("resize", updateWindowSize)
     updateWindowSize()
   }, [])
@@ -125,12 +126,14 @@ const Header = ({ siteTitle, search }) => {
             </Link>
           </h1>
           <div className="nav-right">
-           <a rel="noopener noreferrer" href={postSurveyLink}>
+
+           {postSurveyLink
+           ?<a rel="noopener noreferrer" href={postSurveyLink}>
              <button className="nav-button" onClick={handleOpenPostSurvey}>
                <BorderColorIcon />
               {windowWidth >= 768 && <span>Post-Survey</span>}
             </button>
-            </a>
+            </a>:''}
             <button className="nav-button" onClick={handleClickOpenPrivacy}>
               <PrivacyTipIcon />
               {windowWidth >= 768 && <span>Privacy</span>}
